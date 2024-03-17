@@ -1,0 +1,27 @@
+version: '3'
+services:
+  balance-user-app:
+    container_name: balance-user-app
+    build: .
+    environment:
+      DATABASE_URL: "host=balance_user_db user=postgres password=postgres dbname=postgres sslmode=disable"
+    restart: on-failure
+    ports:
+      - 6060:6060
+    depends_on:
+      - balance_user_db
+  balance_user_db:
+    container_name: balance_user_db
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:6432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+volumes:
+  pgdata: {}
+
